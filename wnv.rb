@@ -9,7 +9,7 @@ $rssUriStr = 'http://feeds.feedburner.com/WelcomeToNightVale?format=xml'
 $downloadDir = '/mnt/hd2/Shared/Podcasts/Welcome To Night Vale'
 
 # The last time that the rss was checked
-$lastDownloaded = Date.now
+$lastDownloaded = DateTime.now.to_date
 
 # The number of seconds between updates
 $updateInterval = 60 * 60 * 12
@@ -57,7 +57,7 @@ end
 def download(uriStr, downloadDir)
     filename = uriToFilename(uriStr)
     filePath = File.join(downloadDir, filename)
-    puts ('wget -O "'+ filePath + '" "' + uriStr + '" > /dev/null')
+    system('wget -O "'+ filePath + '" "' + uriStr + '" > /dev/null')
 end
 
 # Downloads all missing mp3s
@@ -69,7 +69,7 @@ end
 # Returns true if an episode is expected. WNV episodes are expected on
 # the 1st and 15th of every month.
 def isEpisodeExpected()
-    mday = DateTime.now.to_day.mday
+    mday = DateTime.now.to_date.mday
     mday == 1 or mday == 15
 end
 
@@ -80,6 +80,8 @@ def main()
         if isEpisodeExpected
             sync
         end
-        sleep(updateInterval)
+        sleep($updateInterval)
     end
 end
+
+main()
