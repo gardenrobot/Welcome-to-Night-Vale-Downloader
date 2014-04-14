@@ -14,6 +14,10 @@ $lastDownloaded = DateTime.now.to_date
 # The number of seconds between updates
 $updateInterval = 60 * 60 * 12
 
+
+# This is the regular expression that all downloaded filenames should fit
+$mp3Exp = /\d+.+\.mp3/
+
 # Returns a list of all MP3 URIs in the current RSS feed
 def getRssList()
 
@@ -35,8 +39,7 @@ end
 # Returns all files that are downloaded
 def getLocalFiles(downloadDir)
     # check that this is a Night Vale mp3 file
-    mp3Exp = /\d+_\-_[A-Z].+\.mp3/
-    Dir.entries(downloadDir).select { |entry| mp3Exp =~ entry}
+    Dir.entries(downloadDir).select { |entry| $mp3Exp =~ entry}
 end
 
 # Returns a list of uris that still need to be downloaded
@@ -63,7 +66,9 @@ end
 # Downloads all missing mp3s
 def sync(downloadDir)
     urisToDownload = getUrisToDownload(downloadDir)
-    urisToDownload.each{|uri| download(uri, downloadDir)}
+    urisToDownload.each{ |uri|
+        download(uri, downloadDir)
+    }
 end
 
 # Returns true if an episode is expected. WNV episodes are expected on
@@ -78,10 +83,13 @@ def main()
     sync($downloadDir)
     while true
         if isEpisodeExpected
-            sync
+            puts 'Syncing'
+            sync($downloadDir)
+            puts 'Sleeping'
         end
         sleep($updateInterval)
     end
 end
 
-main()
+#main()
+p getLocalFiles($downloadDir).length
