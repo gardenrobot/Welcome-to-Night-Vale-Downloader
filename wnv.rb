@@ -14,6 +14,9 @@ $lastDownloaded = DateTime.now.to_date
 # The number of seconds between updates
 $updateInterval = 60 * 60 * 12
 
+# True if this process has synced at least once
+$hasSynced = true
+
 
 # This is the regular expression that all downloaded filenames should fit
 $mp3Exp = /\d+.+\.mp3/
@@ -58,6 +61,7 @@ end
 
 # Downloads a file over http into a given directory
 def download(uriStr, downloadDir)
+    puts 'Downloading ', uriStr
     filename = uriToFilename(uriStr)
     filePath = File.join(downloadDir, filename)
     system('wget -O "'+ filePath + '" "' + uriStr + '" > /dev/null')
@@ -80,9 +84,9 @@ end
 
 # Main loop. Checks the rss feed every hour if there is an expected episode
 def main()
-    sync($downloadDir)
     while true
-        if isEpisodeExpected
+        if isEpisodeExpected or not $hasSync
+            $hasSync = true
             puts 'Syncing'
             sync($downloadDir)
             puts 'Sleeping'
@@ -91,5 +95,4 @@ def main()
     end
 end
 
-#main()
-p getLocalFiles($downloadDir).length
+main()
