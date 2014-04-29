@@ -17,9 +17,15 @@ $updateInterval = 60 * 60 * 12
 # True if this process has synced at least once
 $hasSynced = true
 
+# True if run in test mode
+$isTest = false
 
 # This is the regular expression that all downloaded filenames should fit
 $mp3Exp = /\d+.+\.mp3/
+
+# Check for updates on these days of the month
+$daysToCheck = [1, 2, 15, 16]
+
 
 # Returns a list of all MP3 URIs in the current RSS feed
 def getRssList()
@@ -64,7 +70,12 @@ def download(uriStr, downloadDir)
     puts 'Downloading ', uriStr
     filename = uriToFilename(uriStr)
     filePath = File.join(downloadDir, filename)
-    system('wget -O "'+ filePath + '" "' + uriStr + '" > /dev/null')
+    command = 'wget -O "'+ filePath + '" "' + uriStr + '" > /dev/null'
+    if $isTest then
+        puts command
+    else
+        system(command)
+    end
 end
 
 # Downloads all missing mp3s
@@ -84,6 +95,7 @@ end
 
 # Main loop. Checks the rss feed every hour if there is an expected episode
 def main()
+    $isTest = ARGV.include?('--test')
     while true
         if isEpisodeExpected or not $hasSync
             $hasSync = true
