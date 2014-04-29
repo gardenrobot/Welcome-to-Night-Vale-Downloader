@@ -90,7 +90,7 @@ end
 # the 1st and 15th of every month.
 def isEpisodeExpected()
     mday = DateTime.now.to_date.mday
-    mday == 1 or mday == 15
+    $daysToCheck.include?(mday)
 end
 
 # Main loop. Checks the rss feed every hour if there is an expected episode
