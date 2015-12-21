@@ -80,11 +80,13 @@ void sync(string downloadDir) {
 // Main loop. Checks the rss feed every week if there is an expected episode
 void main(string[] args) {
 	writeln("Starting");
+	stdout.flush();
 	while(true) {
 		writeln("Syncing");
+		stdout.flush();
 		sync(downloadDir);
 		writeln("Sleeping");
-		break; //TODO remove this
+		stdout.flush();
 		Thread.getThis().sleep(dur!("seconds")(updateInterval));
 	}
 }
