@@ -15,9 +15,6 @@ auto rssUriStr = "http://feeds.feedburner.com/WelcomeToNightVale?format=xml";
 // The directory to download the mp3 files into
 auto downloadDir = "f:\\\\Data\\Shared\\Podcasts\\Welcome to Night Vale\\";
 
-// The number of seconds between updates
-auto updateInterval = 60 * 60;
-
 // Returns a set of all MP3 URIs in the current RSS feed
 int[string] getRssList() {
 	// download rss
@@ -87,7 +84,7 @@ void main(string[] args) {
 		sync(downloadDir);
 		writeln("Sleeping");
 		stdout.flush();
-		Thread.getThis().sleep(dur!("seconds")(updateInterval));
+		Thread.getThis().sleep(dur!("hours")(6));
 	}
 }
 
