@@ -7,7 +7,7 @@ require 'nokogiri'
 $rssUriStr = 'http://feeds.feedburner.com/WelcomeToNightVale?format=xml'
 
 # The directory to download the mp3 files into
-$downloadDir = '/media/raid/Shared/Podcasts/Welcome To Night Vale'
+$downloadDir = '/cygdrive/f/Data/Shared/Podcasts/Welcome to Night Vale/'
 
 # The last time that the rss was checked
 $lastDownloaded = DateTime.now.to_date
