@@ -75,7 +75,6 @@ void sync(string downloadDir) {
 	auto urisToDownload = getUrisToDownload(downloadDir, localRssFiles);
 	writefln("Local files: %s", localRssFiles);
 	writefln("Files to download: %s", urisToDownload.keys.length);
-	writeln();
 
 	foreach(uri; urisToDownload.keys) {
 		writefln("Downloading %s\n to %s", uri, buildPath(downloadDir, uriToFilename(uri)));
@@ -98,14 +97,18 @@ void main(string[] args) {
 	}
 
 	writeln("Starting");
+	writeln();
 	stdout.flush();
 	while(true) {
 		auto time = Clock.currTime().toSimpleString();
 		writeln(time);
 		writefln("Syncing %s", downloadDir);
 		stdout.flush();
+
 		sync(downloadDir);
+
 		writeln("Sleeping");
+		writeln();
 		stdout.flush();
 		Thread.getThis().sleep(dur!("hours")(6));
 	}
