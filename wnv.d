@@ -100,6 +100,8 @@ void main(string[] args) {
 	writeln("Starting");
 	stdout.flush();
 	while(true) {
+		auto time = Clock.currTime().toSimpleString();
+		writeln(time);
 		writefln("Syncing %s", downloadDir);
 		stdout.flush();
 		sync(downloadDir);
