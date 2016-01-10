@@ -6,6 +6,7 @@ import std.file;
 import std.algorithm;
 import std.xml;
 import std.conv;
+import std.path;
 import std.net.curl;
 import core.thread;
 
@@ -77,15 +78,14 @@ void sync(string downloadDir) {
 	writeln();
 
 	foreach(uri; urisToDownload.keys) {
-		writefln("Downloading %s\n to %s", uri, downloadDir ~ uriToFilename(uri));
+		writefln("Downloading %s\n to %s", uri, buildPath(downloadDir, uriToFilename(uri)));
 		stdout.flush();
-		download(uri, downloadDir ~ uriToFilename(uri));
+		download(uri, buildPath(downloadDir, uriToFilename(uri)));
 	}
 }
 
 // Main loop. Checks the rss feed every week if there is an expected episode
 void main(string[] args) {
-
 	if(args.length != 2) {
 		stderr.writeln("Usage: wnv <downloaddir>");
 		exit(1);
