@@ -92,6 +92,10 @@ void main(string[] args) {
 	}
 
 	downloadDir = args[1];
+	if(! exists(downloadDir) || ! isDir(downloadDir)) {
+		stderr.writeln("Download directory does not exist");
+		exit(1);
+	}
 
 	writeln("Starting");
 	stdout.flush();
