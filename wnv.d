@@ -13,7 +13,7 @@ import core.thread;
 auto rssUriStr = "http://feeds.feedburner.com/WelcomeToNightVale?format=xml";
 
 // The directory to download the mp3 files into
-auto downloadDir = "f:\\\\Data\\Shared\\Podcasts\\Welcome to Night Vale\\";
+string downloadDir;
 
 // Returns a set of all MP3 URIs in the current RSS feed
 int[string] getRssList() {
@@ -76,6 +76,14 @@ void sync(string downloadDir) {
 
 // Main loop. Checks the rss feed every week if there is an expected episode
 void main(string[] args) {
+
+	if(args.length != 2) {
+		stderr.writeln("Usage: wnv <downloaddir>");
+		exit(1);
+	}
+
+	downloadDir = args[1];
+
 	writeln("Starting");
 	stdout.flush();
 	while(true) {
